@@ -13,9 +13,22 @@
 
 .NOTES
     Lizenz: MIT
+    Version: 1.0
 #>
 
+# Funktion für Statusanzeige
+function Write-ProgressStatus {
+    param (
+        [string]$Activity,
+        [string]$Status,
+        [int]$PercentComplete
+    )
+    Write-Progress -Activity $Activity -Status $Status -PercentComplete $PercentComplete
+    Write-Host "[$($PercentComplete)%] $Activity - $Status" -ForegroundColor Cyan
+}
+
 # Exchange Server PowerShell Modul laden
+Write-ProgressStatus -Activity "Initialisierung" -Status "Lade Exchange PowerShell Modul..." -PercentComplete 0
 Add-PSSnapin Microsoft.Exchange.Management.PowerShell.SnapIn -ErrorAction SilentlyContinue
 
 # Datum fuer Report
@@ -96,13 +109,22 @@ function Get-MailboxPermissions {
 }
 
 # Hauptteil des Reports
+Write-ProgressStatus -Activity "Report-Erstellung" -Status "Initialisiere Report..." -PercentComplete 10
 $reportContent = ""
 
 # Teil 1: Benutzerpostfuecher
+Write-ProgressStatus -Activity "Report-Erstellung" -Status "Sammle Benutzerpostfächer..." -PercentComplete 20
 $reportContent += "<div class='section'><h2>Benutzerpostfuecher - Berechtigungen</h2>"
 $alleBenutzerPostfaecher = Get-Mailbox -ResultSize Unlimited | Where-Object {$_.RecipientTypeDetails -eq "UserMailbox"}
+$totalMailboxCount = $alleBenutzerPostfaecher.Count
+$currentMailbox = 0
 
 foreach ($postfach in $alleBenutzerPostfaecher) {
+    $currentMailbox++
+    $percentComplete = 20 + (30 * ($currentMailbox / $totalMailboxCount))
+    $statusMessage = "Verarbeite Postfach ${currentMailbox} von ${totalMailboxCount}: $($postfach.DisplayName)"
+    Write-ProgressStatus -Activity "Benutzerpostfächer" -Status $statusMessage -PercentComplete $percentComplete
+    
     $berechtigungen = Get-MailboxPermissions -Mailbox $postfach.Identity
     
     if ($berechtigungen) {
@@ -118,10 +140,18 @@ foreach ($postfach in $alleBenutzerPostfaecher) {
 }
 
 # Teil 2: Freigegebene Postfuecher
+Write-ProgressStatus -Activity "Report-Erstellung" -Status "Sammle freigegebene Postfächer..." -PercentComplete 60
 $reportContent += "<div class='section'><h2>Freigegebene Postfaecher - Berechtigungen</h2>"
 $alleFreigegebenenPostfaecher = Get-Mailbox -ResultSize Unlimited | Where-Object {$_.RecipientTypeDetails -eq "SharedMailbox"}
+$totalSharedMailboxCount = $alleFreigegebenenPostfaecher.Count
+$currentSharedMailbox = 0
 
 foreach ($postfach in $alleFreigegebenenPostfaecher) {
+    $currentSharedMailbox++
+    $percentComplete = 60 + (30 * ($currentSharedMailbox / $totalSharedMailboxCount))
+    $statusMessage = "Verarbeite Postfach ${currentSharedMailbox} von ${totalSharedMailboxCount}: $($postfach.DisplayName)"
+    Write-ProgressStatus -Activity "Freigegebene Postfächer" -Status $statusMessage -PercentComplete $percentComplete
+    
     $berechtigungen = Get-MailboxPermissions -Mailbox $postfach.Identity
     
     if ($berechtigungen) {
@@ -143,7 +173,9 @@ $htmlFooter = @"
 "@
 
 # Gesamten HTML-Report zusammenstellen und speichern
+Write-ProgressStatus -Activity "Report-Erstellung" -Status "Speichere Report..." -PercentComplete 90
 $htmlReport = $htmlHeader + $reportContent + $htmlFooter
 $htmlReport | Out-File -FilePath $reportPfad -Encoding UTF8
 
-Write-Host "Report wurde erstellt unter: $reportPfad"
+Write-ProgressStatus -Activity "Report-Erstellung" -Status "Fertig!" -PercentComplete 100
+Write-Host "`nReport wurde erstellt unter: $reportPfad" -ForegroundColor Green
