@@ -1,3 +1,20 @@
+<#
+.SYNOPSIS
+    Erstellt einen Bericht über die Berechtigungen von Exchange-Postfächern.
+.DESCRIPTION
+    Dieses PowerShell-Skript sammelt Postfachberechtigungen (Postfachzugriffsrechte, "Send-As" und "Send on Behalf") für alle Benutzer- und freigegebene Postfächer in einem Exchange-Server und erstellt einen HTML-Report, der die Berechtigungen anzeigt.
+
+.EXAMPLE
+    PS> .\ExchangePermissionsReport.ps1
+    (Erstellt einen Bericht über die Berechtigungen und speichert ihn als HTML-Datei.)
+
+.LINK
+    https://github.com/chris-20/ExchangePermissionsReport
+
+.NOTES
+    Lizenz: MIT
+#>
+
 # Exchange Server PowerShell Modul laden
 Add-PSSnapin Microsoft.Exchange.Management.PowerShell.SnapIn -ErrorAction SilentlyContinue
 
