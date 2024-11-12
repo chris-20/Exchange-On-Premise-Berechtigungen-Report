@@ -82,7 +82,7 @@ function Get-MailboxPermissions {
 $reportContent = ""
 
 # Teil 1: Benutzerpostfuecher
-$reportContent += "<div class='section'><h2>Benutzerpostf�cher - Berechtigungen</h2>"
+$reportContent += "<div class='section'><h2>Benutzerpostfuecher - Berechtigungen</h2>"
 $alleBenutzerPostfaecher = Get-Mailbox -ResultSize Unlimited | Where-Object {$_.RecipientTypeDetails -eq "UserMailbox"}
 
 foreach ($postfach in $alleBenutzerPostfaecher) {
@@ -101,7 +101,7 @@ foreach ($postfach in $alleBenutzerPostfaecher) {
 }
 
 # Teil 2: Freigegebene Postfuecher
-$reportContent += "<div class='section'><h2>Freigegebene Postf�cher - Berechtigungen</h2>"
+$reportContent += "<div class='section'><h2>Freigegebene Postfaecher - Berechtigungen</h2>"
 $alleFreigegebenenPostfaecher = Get-Mailbox -ResultSize Unlimited | Where-Object {$_.RecipientTypeDetails -eq "SharedMailbox"}
 
 foreach ($postfach in $alleFreigegebenenPostfaecher) {
