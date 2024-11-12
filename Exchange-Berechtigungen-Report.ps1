@@ -9,7 +9,7 @@
     (Erstellt einen Bericht über die Berechtigungen und speichert ihn als HTML-Datei.)
 
 .LINK
-    https://github.com/chris-20/Exchange-Berechtigungen-Report
+    https://github.com/chris-20/Exchange-On-Premise-Berechtigungen-Report/
 
 .NOTES
     Lizenz: MIT
