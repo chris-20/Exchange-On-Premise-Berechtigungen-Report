@@ -1,6 +1,6 @@
 ## 📊 Exchange-Berechtigungen-Report
 
-Dieses PowerShell-Skript erstellt einen umfassenden Berechtigungsbericht für Benutzer- und freigegebene Postfächer auf einem Exchange Server. Es erfasst detailliert Postfachberechtigungen, `Send-As`- und `Send-on-Behalf`-Berechtigungen und erstellt eine übersichtliche HTML-Datei. Der Report dient IT-Administratoren als wertvolle Hilfe, um Zugriffsbeschränkungen zu prüfen, Sicherheitsanforderungen einzuhalten und die Übersicht zu wahren.
+Dieses PowerShell-Skript erstellt einen umfassenden Berechtigungsbericht für Benutzer- und freigegebene Postfächer auf einem Exchange Server. Es erfasst detailliert Postfachberechtigungen, `Send-As`- und `Send-on-Behalf`-Berechtigungen und erstellt eine übersichtliche HTML-Datei. Der Report dient um Zugriffsbeschränkungen zu prüfen, Sicherheitsanforderungen einzuhalten und die Übersicht zu wahren.
 
 ### ✨ Funktionen
 
