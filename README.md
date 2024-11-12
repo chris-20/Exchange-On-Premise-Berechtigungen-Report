@@ -11,7 +11,7 @@ Dieses PowerShell-Skript erstellt einen umfassenden Berechtigungsbericht für Be
 
 📋 **Voraussetzungen**
 
-- PowerShell-Zugriff auf den Exchange Server
+- Zugriff auf den Exchange On-Premise Server
 - Berechtigungen zur Nutzung der Exchange Server PowerShell-Module
 
 🚀 **Verwendung**
