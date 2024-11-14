@@ -38,28 +38,262 @@ $reportPfad = "Exchange_Berechtigungen_Report_$($datum.Replace(':', '-')).html"
 # HTML-Styling
 $htmlStyle = @"
 <style>
-    body { font-family: Arial, sans-serif; margin: 20px; }
-    h1, h2 { color: #2c3e50; }
-    table { border-collapse: collapse; width: 100%; margin-bottom: 20px; }
-    th { background-color: #2c3e50; color: white; padding: 10px; text-align: left; }
-    td { padding: 8px; border: 1px solid #ddd; }
-    tr:nth-child(even) { background-color: #f2f2f2; }
-    tr:hover { background-color: #e9e9e9; }
-    .section { margin-bottom: 30px; }
+    :root {
+        --primary-gradient-start: #2B5876;
+        --primary-gradient-end: #4E4376;
+        --accent-gradient-start: #00c6ff;
+        --accent-gradient-end: #0072ff;
+        --background-color: #f8fafc;
+        --card-background: #ffffff;
+        --text-primary: #1e293b;
+        --text-secondary: #64748b;
+        --border-radius: 12px;
+        --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        --shadow-sm: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+        --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1);
+        --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.1);
+    }
+
+    body { 
+        font-family: 'Segoe UI', system-ui, sans-serif;
+        line-height: 1.6; 
+        margin: 0; 
+        padding: 32px; 
+        background: linear-gradient(135deg, var(--background-color), #ffffff);
+        color: var(--text-primary);
+        min-height: 100vh;
+    }
+
+    .container { 
+        max-width: 1200px; 
+        margin: 0 auto; 
+        background-color: var(--card-background); 
+        padding: 32px;
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow-lg);
+        border: 1px solid rgba(43, 88, 118, 0.08);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, 
+            var(--accent-gradient-start), 
+            var(--accent-gradient-end), 
+            var(--primary-gradient-start), 
+            var(--primary-gradient-end));
+        background-size: 300% 100%;
+        animation: gradientMove 8s ease infinite;
+    }
+
+    @keyframes gradientMove {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+
+    h1 { 
+        color: var(--text-primary);
+        font-size: 2.25rem;
+        font-weight: 700;
+        letter-spacing: -0.025em;
+        margin-bottom: 2rem;
+        padding-bottom: 1rem;
+        background: linear-gradient(135deg, var(--primary-gradient-start), var(--primary-gradient-end));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        position: relative;
+    }
+
+    h1::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: linear-gradient(90deg, 
+            var(--accent-gradient-start), 
+            var(--accent-gradient-end));
+        border-radius: 2px;
+        opacity: 0.8;
+    }
+
+    h2 {
+        color: var(--primary-gradient-start);
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin: 2rem 0 1.5rem;
+        padding: 0.5rem 1rem;
+        background: linear-gradient(135deg, 
+            rgba(43, 88, 118, 0.08), 
+            rgba(78, 67, 118, 0.08));
+        border-radius: var(--border-radius);
+        position: relative;
+        overflow: hidden;
+    }
+
+    h2::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 4px;
+        background: linear-gradient(to bottom, 
+            var(--accent-gradient-start), 
+            var(--accent-gradient-end));
+        border-radius: 2px;
+        opacity: 0.8;
+    }
+
+    h3 {
+        color: var(--text-primary);
+        font-size: 1.25rem;
+        font-weight: 500;
+        margin: 1.5rem 0 1rem;
+        padding: 0.75rem 1rem;
+        background: linear-gradient(135deg, 
+            rgba(43, 88, 118, 0.03), 
+            rgba(78, 67, 118, 0.03));
+        border-radius: var(--border-radius);
+        border: 1px solid rgba(43, 88, 118, 0.06);
+        transition: var(--transition-smooth);
+    }
+
+    h3:hover {
+        transform: translateX(4px);
+        border-color: rgba(0, 198, 255, 0.2);
+    }
+
+    .section {
+        margin: 2rem 0;
+        padding: 1.5rem;
+        background: linear-gradient(135deg, 
+            var(--card-background), 
+            rgba(248, 250, 252, 0.5));
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow-md);
+        border: 1px solid rgba(43, 88, 118, 0.08);
+        transition: var(--transition-smooth);
+    }
+
+    .section:hover {
+        box-shadow: var(--shadow-lg);
+    }
+
+    table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        margin: 1rem 0;
+        background: var(--card-background);
+        border-radius: var(--border-radius);
+        overflow: hidden;
+        box-shadow: var(--shadow-sm);
+        border: 1px solid rgba(43, 88, 118, 0.08);
+    }
+
+    th {
+        background: linear-gradient(135deg, 
+            var(--primary-gradient-start), 
+            var(--primary-gradient-end));
+        color: white;
+        padding: 16px;
+        text-align: left;
+        font-weight: 500;
+        font-size: 0.875rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        position: relative;
+        overflow: hidden;
+    }
+
+    th::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: linear-gradient(90deg, 
+            rgba(255, 255, 255, 0.2), 
+            rgba(255, 255, 255, 0.1));
+    }
+
+    td {
+        padding: 12px 16px;
+        border-bottom: 1px solid rgba(43, 88, 118, 0.08);
+        font-size: 0.875rem;
+        color: var(--text-primary);
+        transition: var(--transition-smooth);
+    }
+
+    tr:last-child td {
+        border-bottom: none;
+    }
+
+    tr {
+        transition: var(--transition-smooth);
+    }
+
+    tr:nth-child(even) {
+        background: linear-gradient(135deg, 
+            rgba(43, 88, 118, 0.02), 
+            rgba(78, 67, 118, 0.02));
+    }
+
+    tr:hover {
+        background: linear-gradient(135deg, 
+            rgba(0, 198, 255, 0.05), 
+            rgba(0, 114, 255, 0.05));
+    }
+
+    .timestamp {
+        color: var(--text-secondary);
+        font-size: 0.875rem;
+        margin-top: 2rem;
+        padding: 1rem;
+        background: linear-gradient(135deg, 
+            rgba(43, 88, 118, 0.02), 
+            rgba(78, 67, 118, 0.02));
+        border-radius: var(--border-radius);
+        text-align: right;
+        border: 1px solid rgba(43, 88, 118, 0.06);
+    }
+
+    @media (max-width: 768px) {
+        body {
+            padding: 16px;
+        }
+
+        .container {
+            padding: 16px;
+        }
+    }
 </style>
 "@
 
-# HTML-Header
 $htmlHeader = @"
 <!DOCTYPE html>
-<html>
+<html lang="de">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Exchange Berechtigungen Report</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNDAgMjQwIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9InByaW1hcnlHcmFkaWVudCIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+PHN0b3Agb2Zmc2V0PSIwJSIgc3R5bGU9InN0b3AtY29sb3I6IzJCNTg3NiIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3R5bGU9InN0b3AtY29sb3I6IzRFNDM3NiIvPjwvbGluZWFyR3JhZGllbnQ+PGxpbmVhckdyYWRpZW50IGlkPSJhY2NlbnRHcmFkaWVudCIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMCUiPjxzdG9wIG9mZnNldD0iMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiMwMGM2ZmYiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiMwMDcyZmYiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48Y2lyY2xlIGN4PSIxMjAiIGN5PSIxMjAiIHI9IjExMCIgZmlsbD0idXJsKCNwcmltYXJ5R3JhZGllbnQpIi8+PHBhdGggZD0iTSA2MCwxMjAgTCA5MCwxMjAgTCAxMDUsNzAgTCAxMzUsMTcwIEwgMTUwLDEyMCBMIDE4MCwxMjAiIGZpbGw9Im5vbmUiIHN0cm9rZT0idXJsKCNhY2NlbnRHcmFkaWVudCkiIHN0cm9rZS13aWR0aD0iMTQiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPjwvc3ZnPg==">
     $htmlStyle
 </head>
 <body>
-    <h1>Exchange Berechtigungen Report</h1>
-    <p>Erstellt am: $datum</p>
+    <div class="container">
+        <h1>Exchange Berechtigungen Report</h1>
+        <div class="timestamp">Erstellt am: $datum</div>
 "@
 
 # Funktion zum Abrufen der Berechtigungen fuer ein Postfach
@@ -114,7 +348,7 @@ $reportContent = ""
 
 # Teil 1: Benutzerpostfuecher
 Write-ProgressStatus -Activity "Report-Erstellung" -Status "Sammle Benutzerpostfächer..." -PercentComplete 20
-$reportContent += "<div class='section'><h2>Benutzerpostfuecher - Berechtigungen</h2>"
+$reportContent += "<div class='section'><h2>Benutzerpostfächer - Berechtigungen</h2>"
 $alleBenutzerPostfaecher = Get-Mailbox -ResultSize Unlimited | Where-Object {$_.RecipientTypeDetails -eq "UserMailbox"}
 $totalMailboxCount = $alleBenutzerPostfaecher.Count
 $currentMailbox = 0
@@ -141,7 +375,7 @@ foreach ($postfach in $alleBenutzerPostfaecher) {
 
 # Teil 2: Freigegebene Postfuecher
 Write-ProgressStatus -Activity "Report-Erstellung" -Status "Sammle freigegebene Postfächer..." -PercentComplete 60
-$reportContent += "<div class='section'><h2>Freigegebene Postfaecher - Berechtigungen</h2>"
+$reportContent += "<div class='section'><h2>Freigegebene Postfächer - Berechtigungen</h2>"
 $alleFreigegebenenPostfaecher = Get-Mailbox -ResultSize Unlimited | Where-Object {$_.RecipientTypeDetails -eq "SharedMailbox"}
 $totalSharedMailboxCount = $alleFreigegebenenPostfaecher.Count
 $currentSharedMailbox = 0
@@ -168,6 +402,7 @@ foreach ($postfach in $alleFreigegebenenPostfaecher) {
 
 # HTML Footer
 $htmlFooter = @"
+    </div>
 </body>
 </html>
 "@
