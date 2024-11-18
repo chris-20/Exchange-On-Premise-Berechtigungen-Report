@@ -40,6 +40,7 @@ $htmlStyle = @"
 <style>
     :root {
         --primary-gradient-start: #2B5876;
+        --primary-gradient-mid: #3B4B76;
         --primary-gradient-end: #4E4376;
         --accent-gradient-start: #00c6ff;
         --accent-gradient-end: #0072ff;
@@ -84,18 +85,9 @@ $htmlStyle = @"
         right: 0;
         height: 4px;
         background: linear-gradient(90deg, 
-            var(--accent-gradient-start), 
-            var(--accent-gradient-end), 
             var(--primary-gradient-start), 
             var(--primary-gradient-end));
-        background-size: 300% 100%;
-        animation: gradientMove 8s ease infinite;
-    }
-
-    @keyframes gradientMove {
-        0% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-        100% { background-position: 0% 50%; }
+        opacity: 0.8;
     }
 
     h1 { 
@@ -105,7 +97,9 @@ $htmlStyle = @"
         letter-spacing: -0.025em;
         margin-bottom: 2rem;
         padding-bottom: 1rem;
-        background: linear-gradient(135deg, var(--primary-gradient-start), var(--primary-gradient-end));
+        background: linear-gradient(135deg, 
+            var(--primary-gradient-start), 
+            var(--primary-gradient-end));
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         position: relative;
@@ -146,11 +140,8 @@ $htmlStyle = @"
         top: 0;
         bottom: 0;
         width: 4px;
-        background: linear-gradient(to bottom, 
-            var(--accent-gradient-start), 
-            var(--accent-gradient-end));
+        background: var(--primary-gradient-start);
         border-radius: 2px;
-        opacity: 0.8;
     }
 
     h3 {
@@ -159,9 +150,7 @@ $htmlStyle = @"
         font-weight: 500;
         margin: 1.5rem 0 1rem;
         padding: 0.75rem 1rem;
-        background: linear-gradient(135deg, 
-            rgba(43, 88, 118, 0.03), 
-            rgba(78, 67, 118, 0.03));
+        background: rgba(43, 88, 118, 0.03);
         border-radius: var(--border-radius);
         border: 1px solid rgba(43, 88, 118, 0.06);
         transition: var(--transition-smooth);
@@ -169,15 +158,14 @@ $htmlStyle = @"
 
     h3:hover {
         transform: translateX(4px);
-        border-color: rgba(0, 198, 255, 0.2);
+        border-color: var(--primary-gradient-start);
+        background: rgba(43, 88, 118, 0.05);
     }
 
     .section {
         margin: 2rem 0;
         padding: 1.5rem;
-        background: linear-gradient(135deg, 
-            var(--card-background), 
-            rgba(248, 250, 252, 0.5));
+        background: var(--card-background);
         border-radius: var(--border-radius);
         box-shadow: var(--shadow-md);
         border: 1px solid rgba(43, 88, 118, 0.08);
@@ -201,9 +189,7 @@ $htmlStyle = @"
     }
 
     th {
-        background: linear-gradient(135deg, 
-            var(--primary-gradient-start), 
-            var(--primary-gradient-end));
+        background: var(--primary-gradient-start);
         color: white;
         padding: 16px;
         text-align: left;
@@ -211,20 +197,23 @@ $htmlStyle = @"
         font-size: 0.875rem;
         text-transform: uppercase;
         letter-spacing: 0.05em;
-        position: relative;
-        overflow: hidden;
     }
 
-    th::after {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        height: 1px;
-        background: linear-gradient(90deg, 
-            rgba(255, 255, 255, 0.2), 
-            rgba(255, 255, 255, 0.1));
+    tr th:first-child {
+        background: linear-gradient(90deg,
+            var(--primary-gradient-start),
+            var(--primary-gradient-start) 50%,
+            var(--primary-gradient-end) 100%);
+    }
+
+    tr th:not(:first-child):not(:last-child) {
+        background: var(--primary-gradient-end);
+    }
+
+    tr th:last-child {
+        background: linear-gradient(90deg,
+            var(--primary-gradient-end) 0%,
+            var(--primary-gradient-start) 100%);
     }
 
     td {
@@ -244,15 +233,11 @@ $htmlStyle = @"
     }
 
     tr:nth-child(even) {
-        background: linear-gradient(135deg, 
-            rgba(43, 88, 118, 0.02), 
-            rgba(78, 67, 118, 0.02));
+        background: rgba(43, 88, 118, 0.02);
     }
 
     tr:hover {
-        background: linear-gradient(135deg, 
-            rgba(0, 198, 255, 0.05), 
-            rgba(0, 114, 255, 0.05));
+        background: rgba(43, 88, 118, 0.05);
     }
 
     .timestamp {
@@ -260,9 +245,7 @@ $htmlStyle = @"
         font-size: 0.875rem;
         margin-top: 2rem;
         padding: 1rem;
-        background: linear-gradient(135deg, 
-            rgba(43, 88, 118, 0.02), 
-            rgba(78, 67, 118, 0.02));
+        background: rgba(43, 88, 118, 0.02);
         border-radius: var(--border-radius);
         text-align: right;
         border: 1px solid rgba(43, 88, 118, 0.06);
@@ -275,6 +258,10 @@ $htmlStyle = @"
 
         .container {
             padding: 16px;
+        }
+
+        td, th {
+            padding: 12px;
         }
     }
 </style>
