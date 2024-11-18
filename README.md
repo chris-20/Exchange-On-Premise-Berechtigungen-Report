@@ -24,6 +24,7 @@ Dieses PowerShell-Skript erstellt einen umfassenden Berechtigungsbericht für Be
 5. Der Bericht wird als HTML-Datei im gleichen Verzeichnis gespeichert und enthält einen Zeitstempel im Dateinamen.
 
 📘 **Beispielausgabe**
+![Exchange Berechtigungen Report example](https://github.com/user-attachments/assets/1a1ddb12-40ea-41b4-9251-cb9cdcc42260)
 
 Der HTML-Bericht zeigt:
 
